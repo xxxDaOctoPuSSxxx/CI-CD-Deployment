@@ -1,4 +1,6 @@
+
 # Compiled files
+.gitignore
 *.tfstate
 *.tfstate.backup
 .terraform.tfstate.lock.info
