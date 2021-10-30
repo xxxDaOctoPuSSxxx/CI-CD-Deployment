@@ -5,7 +5,7 @@
 *********
  
 
-### in This module I create next AWS resource: 
+### In This module I create next AWS resource: 
 
 1. AWS Virtual Private Cloud; 
 
