@@ -1,8 +1,8 @@
-# Network Module 
+# **Network Module** 
 
 ## Previously to run need export AWS account credentials 
 
- 
+*********
  
 
 ### in This module I create next AWS resource: 
@@ -13,12 +13,11 @@
 
 3. Create an internet gateway from my VPC to global network; 
 
-4. Create a NAT gateways in each public subnets for restream traffic from private subnets to global web; 
+4. Create a **NAT gateways** in each public subnets for restream traffic from private subnets to global web; 
 
-5. Create routing table & writing route rules for all private & public traffic; 
+5. Create **routing table** & writing route rules for all private & public traffic; 
 
- 
- 
+**********
  
 
 ### Outputs contains next: 
@@ -41,19 +40,21 @@
 
 9. private_subnets_cidr_blok. 
 
- 
+**************
  
 
 ### Variable contains next: 
 
-1. owner - to add owner in tags of AWS resource; 
+1. **owner** - to add owner in tags of AWS resource; 
 
-2. project - to add project name in tags of AWS resource; 
+2. **project** - to add project name in tags of AWS resource; 
 
-3. env - to add environments; 
+3. **env** - to add environments; 
 
-4. app_name - to add app_name in tags; 
+4. **app_name** - to add app_name in tags; 
 
-5. vpc_cidr - to set CIDR_BLOCK for VPC; 
+5. **vpc_cidr** - to set CIDR_BLOCK for VPC; 
 
-6. az_count - to set count of availability zones from available pool. 
+6. **az_count** - to set count of availability zones from available pool. 
+
+**************
