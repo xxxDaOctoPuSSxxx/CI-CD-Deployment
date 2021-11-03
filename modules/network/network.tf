@@ -1,8 +1,8 @@
 
 
 provider "aws" {
- # ACCESS_KEY & SECRET_KEY from your AWS Account
- # must be exported to terminal session 
+  profile = var.profile
+  region = var.region
 }
 
 # Data source for declarate availability zones
