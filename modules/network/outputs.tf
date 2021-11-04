@@ -1,3 +1,7 @@
+################################################################################
+                  #Outputs from Network module
+################################################################################
+
 output "availability_zones" {
   value       = data.aws_availability_zones.available.names
   description = "Zones in wich region will be deployment App"
@@ -34,7 +38,7 @@ output "public_subnets_cidr_blok" {
 
 output "private_subnets_id" {
   value       = aws_subnet.private[*].id
-  
+
     description = "IDs of subnets with private access"
 }
 
