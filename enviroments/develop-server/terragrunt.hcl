@@ -19,7 +19,7 @@ inputs = {
     env = local.env_name # Set neme of enviroment variables added to tags
     owner = "Roman Hryshchenko" # Set owner name in tags
     project = "Soft_Serve_DevOps_Study" # Set project name in tags
-    app_name = "Html page on Apache" # Set Application name in tags
+    app_name = "Apache-html" # Set Application name in tags
 
     # Set variables to Network module
     vpc_cidr = "10.0.0.0/16" # Set CIDR_BLOCK to created VPC
