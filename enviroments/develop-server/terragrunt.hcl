@@ -9,6 +9,7 @@ terraform {
 locals {
     env_name = replace(path_relative_to_include(), "enviroments/", "")
     app_port = "80"
+    app_name = "Apache-html"
 
 }
 
@@ -19,7 +20,7 @@ inputs = {
     env = local.env_name # Set neme of enviroment variables added to tags
     owner = "Roman Hryshchenko" # Set owner name in tags
     project = "Soft_Serve_DevOps_Study" # Set project name in tags
-    app_name = "Apache-html" # Set Application name in tags
+    app_name = local.app_name  # Set Application name in tags
 
     # Set variables to Network module
     vpc_cidr = "10.0.0.0/16" # Set CIDR_BLOCK to created VPC
@@ -27,4 +28,7 @@ inputs = {
 
     # Variable to Security Group
     app_port     = local.app_port
+
+    # ECR
+     repository_name = format("%s-%s", local.app_name, local.env_name)
 }
