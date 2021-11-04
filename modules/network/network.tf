@@ -1,24 +1,9 @@
 
-
-/*provider "aws" {
-  profile = var.profile
-  region = var.region
-}
-*/
 # Data source for declarate availability zones
 data "aws_availability_zones" "available" {
   state = "available"
 }
 
-/*# Buket to use remote_state of my project
-terraform {
- backend "s3" {
-   bucket   = "devops-study-bucker"
-   key      = "dev/network/terraform.tfstate"
-   region   = "eu-central-1"
- }
-
-}*/
 
 # Create Virual Private Cloud
 resource "aws_vpc" "demo_vpc" {
