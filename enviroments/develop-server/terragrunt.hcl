@@ -3,13 +3,13 @@ include {
 }
 
 terraform {
-    source = "../../modules//network" # Terragrunt need (//) to run Terraform correctly
+    source = "../../modules//deployment" # Terragrunt need (//) to run Terraform correctly
 }
 
 locals {
     env_name = replace(path_relative_to_include(), "enviroments/", "")
     app_port = "80"
-    app_name = "Apache-html"
+    app_name = "apache-html"
 
 }
 
