@@ -1,18 +1,17 @@
-resource "aws_appautoscaling_target" "ecs_target" {
-  max_capacity       = var.asg_max
-  min_capacity       = var.asg_min
-  resource_id        = "service/${aws_ecs_cluster.apache-cluster.name}/${aws_ecs_service.apache-service.name}"
-  scalable_dimension = "ecs:service:DesiredCount"
+resource "aws_appautoscaling_target" "target" {
   service_namespace  = "ecs"
+  resource_id        = "service/${aws_ecs_cluster.main.name}/${aws_ecs_service.main.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  min_capacity       = 2
+  max_capacity       = 4
 }
 
-#Automatically scale capacity up by one
-resource "aws_appautoscaling_policy" "ecs_policy_up" {
-  name               = "scale-down"
-  policy_type        = "StepScaling"
-  resource_id        = "service/${aws_ecs_cluster.apache-cluster.name}/${aws_ecs_service.apache-service.name}"
-  scalable_dimension = aws_appautoscaling_target.ecs_target.scalable_dimension
-  service_namespace  = aws_appautoscaling_target.ecs_target.service_namespace
+# Automatically scale capacity up by one
+resource "aws_appautoscaling_policy" "up" {
+  name               = "${var.app_name}-${var.env}_scale_up"
+  resource_id        = "service/${aws_ecs_cluster.main.name}/${aws_ecs_service.main.name}"
+  service_namespace  = "ecs"
+  scalable_dimension =  "ecs:service:DesiredCount"
 
   step_scaling_policy_configuration {
     adjustment_type         = "ChangeInCapacity"
@@ -20,8 +19,24 @@ resource "aws_appautoscaling_policy" "ecs_policy_up" {
     metric_aggregation_type = "Maximum"
 
     step_adjustment {
-      metric_interval_upper_bound = 0
-      scaling_adjustment          = -1
+      metric_interval_lower_bound = 0
+      scaling_adjustment          = 1
     }
   }
+}
+
+
+# Set up CloudWatch group and log stream and retain logs for 30 days
+resource "aws_cloudwatch_log_group" "apache_log_group" {
+  name              = "/ecs/apache"
+  retention_in_days = 30
+
+  tags = {
+    Name = "cw-log-group"
+  }
+}
+
+resource "aws_cloudwatch_log_stream" "apache_log_stream" {
+  name           = "apache-log-stream"
+  log_group_name = aws_cloudwatch_log_group.apache_log_group.name
 }

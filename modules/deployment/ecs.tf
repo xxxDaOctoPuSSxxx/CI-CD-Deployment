@@ -1,34 +1,35 @@
-resource "aws_ecs_cluster" "apache-cluster" {
-  name = "apache-cluster"
+resource "aws_ecs_cluster" "main" {
+  name = "${var.app_name}-${var.env}-cluster"
 }
 
-data "template_file" "apache-app" {
+data "template_file" "apache_app" {
   template = file("./templates/image/image.json")
-
   vars = {
-    app_image      = var.app_image
+    app_image      = local.app_image
     app_port       = var.app_port
     fargate_cpu    = var.fargate_cpu
     fargate_memory = var.fargate_memory
-    aws_region     = var.region
+    aws_region     = var.aws_region
+    env            = var.env
+    app_name       = var.app_name
+    image_tag      = var.image_tag
   }
 }
-
 resource "aws_ecs_task_definition" "apache-def" {
-  family                   = "apache-task"
-  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
-  network_mode             = "awsvpc"
+  family = "apache-app"
+  execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
+  network_mode = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = var.fargate_cpu
-  memory                   = var.fargate_memory
-  container_definitions    = data.template_file.apache-app.rendered
+  cpu = var.fargate_cpu
+  memory = var.fargate_memory
+  container_definitions = data.template_file.apache_app.rendered
 }
 
-resource "aws_ecs_service" "apache-service" {
-  name            = "apache-app-service"
-  cluster         = aws_ecs_cluster.apache-cluster.id
+resource "aws_ecs_service" "main" {
+  name            = "${var.app_name}-${var.env}-service"
+  cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.apache-def.arn
-  desired_count   = var.asg_desired
+  desired_count   = var.app_count
   launch_type     = "FARGATE"
 
   network_configuration {
@@ -38,10 +39,10 @@ resource "aws_ecs_service" "apache-service" {
   }
 
   load_balancer {
-    target_group_arn = aws_alb_target_group.app.arn
-    container_name   = "apache-app"
+    target_group_arn = aws_alb_target_group.apache.id
+    container_name   = "apache"
     container_port   = var.app_port
   }
 
-  depends_on = [aws_alb_listener.front_end, aws_iam_role_policy_attachment.ecs_task_execution_role]
+  depends_on = [aws_alb_listener.front_end, aws_iam_role.ecs_task_execution_role]
 }

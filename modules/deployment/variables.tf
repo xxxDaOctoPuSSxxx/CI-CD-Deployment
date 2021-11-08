@@ -42,6 +42,23 @@ variable "asg_desired" {}
 ################################################################
 variable "fargate_cpu" {}
 variable "fargate_memory" {}
-variable "app_image" {}
-variable "ecs_task_execution_role" {}
+variable "app_count" {}
+variable "ecs_task_execution_role_name" {}
+variable "ecs_task_role_name" {}
+variable "ecr_repository_url" {
+  type = string
+}
+variable "image_tag" {
+  type = string
+}
+locals{
+  app_image = format("%s:%s", var.ecr_repository_url, var.image_tag)
+}
+variable "taskdef_template" {
+   default = "apache_app.json.tpl"
+}
+variable "aws_region" {
+  description = "aws region"
+}
 
+################################################################

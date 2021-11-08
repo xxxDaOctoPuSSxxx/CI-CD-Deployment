@@ -4,7 +4,7 @@ resource "aws_alb" "main" {
   security_groups = [aws_security_group.load_balancer.id]
 }
 
-resource "aws_alb_target_group" "app" {
+resource "aws_alb_target_group" "apache" {
   name        = "${var.app_name}-${var.env}-tg"
   port        = 80
   protocol    = "HTTP"
@@ -29,7 +29,7 @@ resource "aws_alb_listener" "front_end" {
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_alb_target_group.app.id
+    target_group_arn = aws_alb_target_group.apache.id
     type             = "forward"
   }
 }

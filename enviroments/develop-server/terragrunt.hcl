@@ -10,9 +10,11 @@ locals {
     env_name = replace(path_relative_to_include(), "enviroments/", "")
     app_port = "80"
     app_name = "apache-html"
-    fargate_cpu     = "512"
-    fargate_memory  = "1024"
-
+    app_count = "2"
+    ecr_repository_url = "351279727922.dkr.ecr.eu-central-1.amazonaws.com/apache-app"
+    image_tag = "1.0"
+    repository_name = "apache-app"
+    aws_region = "eu-central-1"
 }
 
 inputs = {
@@ -31,19 +33,24 @@ inputs = {
     # Variable to Security Group module
     app_port     = local.app_port
 
-    # Variable for ECR module
-     repository_name = format("%s-%s", local.app_name, local.env_name)
-    
-    
+   # # Variable for ECR module
+   #  repository_name = format("%s-%s", local.app_name, local.env_name)
+
+
     # Variables for Auto scaling group
     asg_min              = "1" # minimum running instances
     asg_max              = "2" # maximum running instances
-    asg_desired          = "1" #count of starting EC2 instances
-    instance_type        = "FARGATE" # type of used EC2 Instance
-    
+    asg_desired          = "1" #count of starting fargate instances
+    instance_type        = "FARGATE" # type of used fargate Instance
+
     # Variables for ECS
-    fargate_cpu     = local.fargate_cpu
-    fargate_memory  = local.fargate_memory
-    app_image = ""
-    ecs_task_execution_role = "ecsTaskExecutionRole"
+    app_count       = local.app_count
+    fargate_cpu     = 256
+    fargate_memory  = 512
+    ecs_task_execution_role_name = "ApacheEcsTaskExecutionRole"
+    ecs_task_role_name = "apache-app-task"
+    ecr_repository_url = local.ecr_repository_url
+    image_tag = local.image_tag
+    repository_name = local.repository_name
+    aws_region = local.aws_region
 }

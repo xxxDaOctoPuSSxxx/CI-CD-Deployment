@@ -46,10 +46,7 @@ output "private_subnets_cidr_blok" {
   value       =  aws_subnet.private[*].cidr_block
   description = "CIDR_BLOCK of subnets with private access"
 }
-################################################################################################
-                                  # ECR output
-################################################################################################
 
-output "ecr_repository_url" {
-  value = aws_ecr_repository.ecr_repository.repository_url
+output "APP_URL"{
+  value = aws_alb.main.dns_name
 }
