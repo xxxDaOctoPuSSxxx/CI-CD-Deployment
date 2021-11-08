@@ -30,3 +30,18 @@ variable "health_check_path" {
             # ECR
 ################################################################
 variable "repository_name" {}
+
+################################################################
+            # Auto Scaling group
+################################################################
+variable "asg_min" {}
+variable "asg_max" {}
+variable "asg_desired" {}
+################################################################
+            # ECS
+################################################################
+variable "fargate_cpu" {}
+variable "fargate_memory" {}
+variable "app_image" {}
+variable "ecs_task_execution_role" {}
+
